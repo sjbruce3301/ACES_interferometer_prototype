@@ -1,9 +1,9 @@
 %ACES new camera image reader
 
-[header, data, gains, offsets] = readImgFile("lowFPS_test.img");
+[header, data, gains, offsets] = readImgFile("3khz_mov_3.img");
 b = [];
 
-for frames = 1:224
+for frames = 1:240
     %subplot(8, 2, frames)
     %imagesc(data(:,:,frames))
     %axis image
@@ -21,5 +21,6 @@ end
 
 
 plot(b, 'LineWidth',1.7)
+title("3,000hz Framegrab (motorized) Set 3")
 xlabel("Frame")
 ylabel("Average Intensity")
