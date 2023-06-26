@@ -1,9 +1,9 @@
 %ACES new camera image reader
 
-[header, data, gains, offsets] = readImgFile("nofilter_still_1.img");
+[header, data, gains, offsets] = readImgFile("nofilter_moving_2.img");
 b = [];
 
-for frames = 1:240
+for frames = 1:336
     %subplot(8, 2, frames)
     %imagesc(data(:,:,frames))
     %axis image
@@ -21,6 +21,6 @@ end
 
 
 plot(b, 'LineWidth',1.7)
-title("10,000hz Framegrab (still) Set 1")
+title("10,000hz Framegrab (moving) Set 2")
 xlabel("Frame")
 ylabel("Average Intensity")
