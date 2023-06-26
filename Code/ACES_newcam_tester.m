@@ -24,3 +24,11 @@ plot(b, 'LineWidth',1.7)
 title("10,000hz Framegrab (moving) Set 1")
 xlabel("Frame")
 ylabel("Average Intensity")
+
+fileID = fopen('mimic_log_nofilter_moving_1.bin');
+
+log = fopen('mimic_log_nofilter_moving_1.bin');
+log_dat = fread(log);
+%plot(log_dat)
+
+%fclose(log);
