@@ -25,10 +25,8 @@ title("10,000hz Framegrab (moving) Set 1")
 xlabel("Frame")
 ylabel("Average Intensity")
 
-fileID = fopen('mimic_log_nofilter_moving_1.bin');
-
-log = fopen('mimic_log_nofilter_moving_1.bin');
-log_dat = fread(log);
-%plot(log_dat)
-
-%fclose(log);
+x = randi([0, 255], 600, 600, 28, 'uint8');
+v = VideoWriter('myvideo_grayscale.avi', 'Grayscale AVI');
+open(v);
+writeVideo(v, x);
+close(v)

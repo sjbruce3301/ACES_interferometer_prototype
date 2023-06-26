@@ -1,9 +1,9 @@
 %ACES new camera image reader
 
-[header, data, gains, offsets] = readImgFile("nofilter_still_2.img");
+[header, data, gains, offsets] = readImgFile("trial_2/trial2_vib_set3.img");
 b = [];
 
-for frames = 1:240
+for frames = 1:length(data(10,312,:))
     %subplot(8, 2, frames)
     %imagesc(data(:,:,frames))
     %axis image
@@ -21,6 +21,36 @@ end
 
 
 plot(b, 'LineWidth',1.7)
-title("10,000hz Framegrab (motorized) Set 2")
+title("10,000hz Framegrab (moving) Set 1")
 xlabel("Frame")
 ylabel("Average Intensity")
+
+fileID = fopen('mimic_log_nofilter_moving_1.bin');
+
+log = fopen('mimic_log_nofilter_moving_1.bin');
+log_dat = fread(log);
+%plot(log_dat)
+
+%fclose(log);
+% Prepare the new file.
+vidObj = VideoWriter('trial2_set3.avi');
+open(vidObj);
+
+frameset = data(10,312,:);
+
+for u = 1:length(frameset)
+    im1 = (data(:,:,frames));
+    imwrite(im1, "image.png")
+    i
+end
+
+% Create an animation.
+% write the frames to the video
+for u=1:length(frameset)
+    % convert the image to a frame
+
+    frame = im2frame(images{u});
+    writeVideo(vidObj, frame);
+end
+ % Close the file.
+ close(vidObj);
