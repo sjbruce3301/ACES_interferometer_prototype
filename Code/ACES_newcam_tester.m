@@ -1,6 +1,6 @@
 %ACES new camera image reader
 
-[header, data, gains, offsets] = readImgFile("nofilter_moving_1.img");
+[header, data, gains, offsets] = readImgFile("trial_2/trial2_vib_set3.img");
 b = [];
 
 for frames = 1:length(data(10,312,:))

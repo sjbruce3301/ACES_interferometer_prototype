@@ -1,14 +1,13 @@
 clear
 
 % fname = 'closed_loop_triangle_mimic_2023_04_19_22_24_22.bin';
-fname = 'BubbleWrap_mimic_2023_05_23_13_44_35.bin';
+fname = 'trial_2/VIBSET3_mimic_2023_06_26_18_24_31.bin';
 
-fid = fopen(fullfile('../rocker_arm',fname),'r','b');
+fid = fopen(fname,'r','b');
 data = fread(fid,inf,'double');
 fclose(fid);
 
 data = reshape(data,7,[])';
-data = data(1:17000,:);
 
 time = data(:,1); % Unix time (seconds since 1970)
 iter = data(:,2); % iteration through the loop
