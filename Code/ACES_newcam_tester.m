@@ -1,6 +1,6 @@
 %ACES new camera image reader
 
-[header, data, gains, offsets] = readImgFile("3khz_mov_3.img");
+[header, data, gains, offsets] = readImgFile("nofilter_moving_1.img");
 b = [];
 
 for frames = 1:240
@@ -21,6 +21,6 @@ end
 
 
 plot(b, 'LineWidth',1.7)
-title("3,000hz Framegrab (motorized) Set 3")
+title("10,000hz Framegrab (motorized) Set 3")
 xlabel("Frame")
 ylabel("Average Intensity")
