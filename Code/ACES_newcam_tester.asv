@@ -1,6 +1,6 @@
 %ACES new camera image reader
 
-[header, data, gains, offsets] = readImgFile("nofilter_moving_1.img");
+[header, data, gains, offsets] = readImgFile("trial_2/trial2_vib_set3.img");
 b = [];
 
 for frames = 1:length(data(10,312,:))
@@ -25,7 +25,7 @@ title("10,000hz Framegrab (moving) Set 1")
 xlabel("Frame")
 ylabel("Average Intensity")
 
-fileID = fopen('mimic_log_nofilter_moving_1.bin');
+fileID = fopen('trial2_.bin');
 
 log = fopen('mimic_log_nofilter_moving_1.bin');
 log_dat = fread(log);

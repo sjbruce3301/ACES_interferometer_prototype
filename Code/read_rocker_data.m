@@ -1,7 +1,7 @@
 clear
 
 % fname = 'closed_loop_triangle_mimic_2023_04_19_22_24_22.bin';
-fname = 'trial_2/VIBSET3_mimic_2023_06_26_18_24_31.bin';
+fname = 'mimic_log_nofilter_moving_2.bin';
 
 fid = fopen(fname,'r','b');
 data = fread(fid,inf,'double');
