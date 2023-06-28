@@ -44,7 +44,7 @@ fmts = {'Unknown','Monochrome','Raw Bayer','Mono 12 Packed','BGR','Planar','RGB'
 header.ImageFormat = fmts{vals == tmp(6)};
 
 % Number of frames
-OFB = {572,1,'ushort'};
+OFB = {572,1,'uint'};
 fseek(fid,OFB{1}, 'bof');
 header.NumFrames = fread(fid,OFB{2},OFB{3});
 
