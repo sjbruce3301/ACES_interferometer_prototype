@@ -1,7 +1,7 @@
 clear
 
 % fname = 'closed_loop_triangle_mimic_2023_04_19_22_24_22.bin';
-fname = 'mimic_log_nofilter_moving_2.bin';
+fname = '6_29_filtered_1exp_LOG.bin';
 
 fid = fopen(fname,'r','b');
 data = fread(fid,inf,'double');
@@ -25,12 +25,14 @@ N = round(1/dt);
 
 
 figure(1)
-subplot(3,1,1)
-hold on
+%subplot(3,1,1)
+%hold on
 plot(t,pos)
 xlabel('Time (s)')
 ylabel(['Position (',char(956),'m)'])
 grid on
+
+%%
 
 subplot(3,1,2)
 hold on
