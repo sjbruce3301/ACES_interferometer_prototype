@@ -1,5 +1,5 @@
-laser_filename = 'nb_camera_2023_06_30_16_06_07_data.seq'; %x number of sec in 1 day
-dark_filename = 'nb_camera_2023_06_30_16_09_54_dark.seq';
+laser_filename = '6_30_closed_tap_2.seq'; %x number of sec in 1 day
+dark_filename = '6_30_2_dark.seq';
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
 [d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
@@ -50,12 +50,8 @@ for frames = 1:numframes
     uns_b = [uns_b, unsb1];
 end
 
-%plot intensities wrt time
-figure(1)
-plot(l_ts_sec,intensity_plot)
-
 %Read & plot log file
-fname = 'mimic_2023_06_30_16_04_05.bin';
+fname = 'closed_loop_tap_m_2.bin';
 
 fid = fopen(fname,'r','b');
 data = fread(fid,inf,'double');
@@ -76,9 +72,21 @@ v = gradient(pos)./gradient(t);
 dt = mean(diff(t));
 N = round(1/dt);
 
+%%
+%cosine calc
 
-figure(2)
-subplot(2,1,1)
+cos_array = cos(2*pi*pos/.635*3.5);
+%%
+
+%plot intensities wrt time
+figure(1)
+ax(4) = subplot(4,1,1);
+plot(l_ts_sec - 0.6,intensity_plot)
+xlim([0,30])
+ylabel('Intensity')
+xlabel('Time (s)')
+
+ax(3) = subplot(4,1,2);
 %hold on
 plot(t,pos)
 xlabel('Time (s)')
@@ -86,14 +94,19 @@ ylabel(['Position (',char(956),'m)'])
 xlim([0,30])
 grid on
 
-subplot(2,1,2)
+ax(2) = subplot(4,1,3);
 %hold on
 plot(t,v)
 xlabel('Time (s)')
 ylabel(['Velocity (',char(956),'m/s)'])
 ylim([-100 100])
+xlim([0,30])
 grid on
 
-%%
-%cosine plotter
+ax(1) = subplot(4,1,4);
+plot(t, cos_array)
+ylabel('Cos')
+xlim([0,30])
+xlabel('Time (s)')
 
+linkaxes(ax,'x')
