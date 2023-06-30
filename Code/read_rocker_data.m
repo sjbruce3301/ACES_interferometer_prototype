@@ -1,7 +1,7 @@
 clear
 
 % fname = 'mimic_2023_06_30_12_53_10.bin';
-fname = 'mimic_2023_06_30_12_53_10.bin';
+fname = 'mimic_2023_06_30_16_04_05.bin';
 
 fid = fopen(fname,'r','b');
 data = fread(fid,inf,'double');
@@ -30,23 +30,16 @@ figure(2)
 plot(t,pos)
 xlabel('Time (s)')
 ylabel(['Position (',char(956),'m)'])
+xlim([0,30])
 grid on
 
 %%
-
-subplot(3,1,2)
-hold on
+figure(3)
+%subplot(3,1,2)
+%hold on
 plot(t,v)
 xlabel('Time (s)')
 ylabel(['Velocity (',char(956),'m/s)'])
 ylim([-100 100])
 grid on
 
-subplot(3,1,3)
-hold on
-plot(t,movstd(v,N,1))
-xlabel('Time (s)')
-ylabel(['1-s RMS Velocity (',char(956),'m/s)'])
-ylim([0 30])
-legend('4/19 Pre-isolation','5/23 Post-isolation')
-grid on

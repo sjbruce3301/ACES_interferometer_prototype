@@ -1,0 +1,99 @@
+laser_filename = 'nb_camera_2023_06_30_16_06_07_data.seq'; %x number of sec in 1 day
+dark_filename = 'nb_camera_2023_06_30_16_09_54_dark.seq';
+
+[l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
+[d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
+
+l_ts_sec = (l_ts - l_ts(1)) * 86400;
+
+%l_seq_data = l_seq_data(500:650,:,:);
+%d_seq_data = d_seq_data(500:650,:,:);
+
+width = length(l_seq_data(:,1,1));
+height = length(l_seq_data(1,:,1));
+numframes = length(l_seq_data(1,1,:));
+d_numframes = length(d_seq_data(1,1,:));
+
+
+l_bright = [];
+
+dark_master = zeros(width, height);
+
+
+%create dark image for subtraction
+for x = 1:width
+    for y = 1:height
+        pixels = zeros(1,d_numframes);
+        for u = 1:d_numframes
+            d_pixel = d_seq_data(x,y,u);
+            pixels(1,u) = d_pixel;
+        end
+        average = mean2(pixels);
+        dark_master(x,y) = average;
+    end
+end
+
+%calculate intensities of all frames
+scaled_dat = double(l_seq_data) - dark_master;
+singlepix_intensity = [];
+intensity_plot = [];
+uns_b = [];
+for frames = 1:numframes
+    uns = (l_seq_data(:,:,frames));
+    w_image = (scaled_dat(:,:,frames));
+
+    %calculate brightness
+    b1 = mean2(w_image(275:350,:));
+
+    unsb1 = mean2(uns);
+    intensity_plot = [intensity_plot, b1];
+    uns_b = [uns_b, unsb1];
+end
+
+%plot intensities wrt time
+figure(1)
+plot(l_ts_sec,intensity_plot)
+
+%Read & plot log file
+fname = 'mimic_2023_06_30_16_04_05.bin';
+
+fid = fopen(fname,'r','b');
+data = fread(fid,inf,'double');
+fclose(fid);
+
+data = reshape(data,7,[])';
+
+time = data(:,1); % Unix time (seconds since 1970)
+iter = data(:,2); % iteration through the loop
+ov = data(:,3); % want this to be zero otherwise can't trust the data
+setpt = data(:,4); % where we command the mirror to go
+pos = data(:,5); % where the mirror went
+volt = data(:,6); % output of the controller
+
+t = time-time(1);
+v = gradient(pos)./gradient(t);
+
+dt = mean(diff(t));
+N = round(1/dt);
+
+
+figure(2)
+subplot(2,1,1)
+%hold on
+plot(t,pos)
+xlabel('Time (s)')
+ylabel(['Position (',char(956),'m)'])
+xlim([0,30])
+grid on
+
+subplot(2,1,2)
+%hold on
+plot(t,v)
+xlabel('Time (s)')
+ylabel(['Velocity (',char(956),'m/s)'])
+ylim([-100 100])
+grid on
+
+%%
+%cosine plotter
+
