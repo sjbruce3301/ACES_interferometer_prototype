@@ -1,7 +1,7 @@
 clear
 
-% fname = 'closed_loop_triangle_mimic_2023_04_19_22_24_22.bin';
-fname = '6_29_filtered_1exp_LOG.bin';
+% fname = 'mimic_2023_06_30_12_53_10.bin';
+fname = 'mimic_2023_06_30_12_53_10.bin';
 
 fid = fopen(fname,'r','b');
 data = fread(fid,inf,'double');
@@ -24,7 +24,7 @@ N = round(1/dt);
 
 
 
-figure(1)
+figure(2)
 %subplot(3,1,1)
 %hold on
 plot(t,pos)
