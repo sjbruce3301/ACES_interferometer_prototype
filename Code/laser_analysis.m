@@ -75,38 +75,38 @@ N = round(1/dt);
 %%
 %cosine calc
 
-cos_array = cos(2*pi*pos/.635*3.5);
+cos_array = cos(2*pi*20*t/.635*5+pi);
 %%
 
 %plot intensities wrt time
 figure(1)
 ax(4) = subplot(4,1,1);
-plot(l_ts_sec - 0.6,intensity_plot)
-xlim([0,30])
+plot(l_ts_sec - 0.555,intensity_plot, linewidth = 1.3)
+xlim([8.8,8.9])
 ylabel('Intensity')
 xlabel('Time (s)')
 
-ax(3) = subplot(4,1,2);
+ax(3) = subplot(4,1,4);
 %hold on
-plot(t,pos)
+plot(t,pos, linewidth = 1.3)
 xlabel('Time (s)')
 ylabel(['Position (',char(956),'m)'])
-xlim([0,30])
+xlim([8.8,8.9])
 grid on
 
 ax(2) = subplot(4,1,3);
 %hold on
-plot(t,v)
+plot(t,v, linewidth = 1.3)
 xlabel('Time (s)')
 ylabel(['Velocity (',char(956),'m/s)'])
 ylim([-100 100])
-xlim([0,30])
+xlim([8.8,8.9])
 grid on
 
-ax(1) = subplot(4,1,4);
-plot(t, cos_array)
+ax(1) = subplot(4,1,2);
+plot(t, cos_array, linewidth = 1.3)
 ylabel('Cos')
-xlim([0,30])
+xlim([8.8,8.9])
 xlabel('Time (s)')
 
 linkaxes(ax,'x')
