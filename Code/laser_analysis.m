@@ -1,5 +1,5 @@
-laser_filename = '07_05_m00_set2.seq'; %x number of sec in 1 day
-dark_filename = '07_05_DARK.seq';
+laser_filename = '07_05_ds2_set1.seq'; %x number of sec in 1 day
+dark_filename = '07_05_dark2.seq';
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
 [d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
@@ -51,19 +51,20 @@ for frames = 1:numframes
 end
 
 %Read & plot log file
-fname = 'm00_set2.csv';
+fname = '07_05_ds2_set1.csv';
 
 dt = 100e-6;
 fid=fopen(fname);
 M = textscan(fid,',,%f\r','headerlines',4);
 fclose(fid);
 x1 = M{1};
-t1 = (0:(length(x)-1))*dt;
+t1 = (0:(length(x1)-1))*dt;
 %%
+fname_bin = 'mimic_2023_07_05_ds2_set1.bin';
 
-fid = fopen(fname,'r','b');
-data = fread(fid,inf,'double');
-fclose(fid);
+fid2 = fopen(fname_bin,'r','b');
+data = fread(fid2,inf,'double');
+fclose(fid2);
 
 data = reshape(data,7,[])';
 
@@ -121,7 +122,7 @@ xlabel('Time (s)')
 linkaxes(ax,'x')
 
 %%
-frames = l_seq_data(280:340,:,[1,9,14,19,24,29,34,39,44,49,54,70]); %pick frames to be shown
+frames = l_seq_data(280:340,:,[9,14,19,24,29,34,39,44,49,54,70,80]); %pick frames to be shown
 
 for frame = 1:12
     subplot(3, 4, frame)
@@ -129,7 +130,7 @@ for frame = 1:12
     colormap bone
     imagesc(frames(:,:,frame))
 
-    if frame==1
+    if frame==9
         cl = caxis; %# get color limits from the 1st image
     else
         caxis(cl) %# apply the same color limits to other images
