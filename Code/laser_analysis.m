@@ -78,10 +78,18 @@ N = round(1/dt);
 cos_array = cos(2*pi*20*t/.635*5+pi);
 %%
 
+dt = 100e-6;
+fid=fopen('closed_triangle_set1.csv');
+M = textscan(fid,',,%f\r','headerlines',4);
+fclose(fid);
+x1 = M{1};
+t1 = (0:(length(x)-1))*dt;
+%%
+
 %plot intensities wrt time
 figure(1)
 ax(4) = subplot(4,1,1);
-plot(l_ts_sec - 0.555,intensity_plot, linewidth = 1.3)
+plot(ts_sec - 0.555,intensity_plot, linewidth = 1.3)
 xlim([8.8,8.9])
 ylabel('Intensity')
 xlabel('Time (s)')
@@ -107,35 +115,40 @@ ax(1) = subplot(4,1,2);
 plot(t, cos_array, linewidth = 1.3)
 ylabel('Cos')
 xlim([8.8,8.9])
-xlabel('Time (s)')
+xlabel('Time (s)') 
 
 linkaxes(ax,'x')
 
 %%
-for frames = 1:27
-    %subplot(4, 4, frames)
-    %colorbar
-    %imagesc(img1(:,:,frames), [0, 255])
+frames = l_seq_data(280:340,:,[1,9,14,19,24,29,34,39,44,49,54,70]);
 
-    image = (img1(:,:,frames));
+for frame = 1:12
+    subplot(3, 4, frame)
+    colorbar
+    colormap bone
+    imagesc(frames(:,:,frame))
+
+    if frame==1
+        cl = caxis; %# get color limits from the 1st image
+    else
+        caxis(cl) %# apply the same color limits to other images
+
+    
+end
+
+    %image = (intensity_plot(:,:,frames));
 
     %[y,x] = size(image);
 
     %Mark Center 
-    center = [450, 400];
+    %center = [450, 400];
     %plot(center(1),center(2),'*r')
 
     %calculate brightness
-    brightness = mean2(image(center(2)-200:center(2)+200, center(1)-150:center(1)+150));
-    disp(brightness)
-    b = [b, brightness];
+    %brightness = mean2(image(center(2)-200:center(2)+200, center(1)-150:center(1)+150));
+    %disp(brightness)
+    %b = [b, brightness];
 end
 
-%%
-dt = 100e-6;
-fid=fopen('closed_triangle_set1.csv');
-M = textscan(fid,',,%f\r','headerlines',4);
-fclose(fid);
-x = M{1};
-t = (0:(length(x)-1))*dt;
+
 
