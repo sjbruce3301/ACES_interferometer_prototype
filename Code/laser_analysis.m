@@ -1,5 +1,5 @@
-laser_filename = '07_03_closed_triangle_set1.seq'; %x number of sec in 1 day
-dark_filename = '6_30_2_dark.seq';
+laser_filename = '07_05_m00_set2.seq'; %x number of sec in 1 day
+dark_filename = '07_05_DARK.seq';
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
 [d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
@@ -51,7 +51,15 @@ for frames = 1:numframes
 end
 
 %Read & plot log file
-fname = 'closed_loop_tap_m_2.bin';
+fname = 'm00_set2.csv';
+
+dt = 100e-6;
+fid=fopen(fname);
+M = textscan(fid,',,%f\r','headerlines',4);
+fclose(fid);
+x1 = M{1};
+t1 = (0:(length(x)-1))*dt;
+%%
 
 fid = fopen(fname,'r','b');
 data = fread(fid,inf,'double');
@@ -76,30 +84,23 @@ N = round(1/dt);
 %cosine calc
 
 cos_array = cos(2*pi*20*t/.635*5+pi);
-%%
 
-dt = 100e-6;
-fid=fopen('closed_triangle_set1.csv');
-M = textscan(fid,',,%f\r','headerlines',4);
-fclose(fid);
-x1 = M{1};
-t1 = (0:(length(x)-1))*dt;
 %%
 
 %plot intensities wrt time
 figure(1)
 ax(4) = subplot(4,1,1);
 plot(ts_sec - 0.555,intensity_plot, linewidth = 1.3)
-xlim([8.8,8.9])
+%xlim([8.8,8.9])
 ylabel('Intensity')
 xlabel('Time (s)')
 
 ax(3) = subplot(4,1,4);
 %hold on
-plot(t,pos, linewidth = 1.3)
+plot(t1,x1, linewidth = 1.3)
 xlabel('Time (s)')
 ylabel(['Position (',char(956),'m)'])
-xlim([8.8,8.9])
+%xlim([8.8,8.9])
 grid on
 
 ax(2) = subplot(4,1,3);
@@ -108,19 +109,19 @@ plot(t,v, linewidth = 1.3)
 xlabel('Time (s)')
 ylabel(['Velocity (',char(956),'m/s)'])
 ylim([-100 100])
-xlim([8.8,8.9])
+%xlim([8.8,8.9])
 grid on
 
 ax(1) = subplot(4,1,2);
 plot(t, cos_array, linewidth = 1.3)
 ylabel('Cos')
-xlim([8.8,8.9])
+%xlim([8.8,8.9])
 xlabel('Time (s)') 
 
 linkaxes(ax,'x')
 
 %%
-frames = l_seq_data(280:340,:,[1,9,14,19,24,29,34,39,44,49,54,70]);
+frames = l_seq_data(280:340,:,[1,9,14,19,24,29,34,39,44,49,54,70]); %pick frames to be shown
 
 for frame = 1:12
     subplot(3, 4, frame)
@@ -134,20 +135,7 @@ for frame = 1:12
         caxis(cl) %# apply the same color limits to other images
 
     
-end
-
-    %image = (intensity_plot(:,:,frames));
-
-    %[y,x] = size(image);
-
-    %Mark Center 
-    %center = [450, 400];
-    %plot(center(1),center(2),'*r')
-
-    %calculate brightness
-    %brightness = mean2(image(center(2)-200:center(2)+200, center(1)-150:center(1)+150));
-    %disp(brightness)
-    %b = [b, brightness];
+    end
 end
 
 
