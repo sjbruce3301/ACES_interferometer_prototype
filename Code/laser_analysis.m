@@ -1,10 +1,10 @@
-laser_filename = '6_30_closed_tap_2.seq'; %x number of sec in 1 day
+laser_filename = '07_03_closed_triangle_set1.seq'; %x number of sec in 1 day
 dark_filename = '6_30_2_dark.seq';
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
 [d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
 
-l_ts_sec = (l_ts - l_ts(1)) * 86400;
+ts_sec = (l_ts - l_ts(1)) * 86400;
 
 %l_seq_data = l_seq_data(500:650,:,:);
 %d_seq_data = d_seq_data(500:650,:,:);
@@ -110,3 +110,32 @@ xlim([8.8,8.9])
 xlabel('Time (s)')
 
 linkaxes(ax,'x')
+
+%%
+for frames = 1:27
+    %subplot(4, 4, frames)
+    %colorbar
+    %imagesc(img1(:,:,frames), [0, 255])
+
+    image = (img1(:,:,frames));
+
+    %[y,x] = size(image);
+
+    %Mark Center 
+    center = [450, 400];
+    %plot(center(1),center(2),'*r')
+
+    %calculate brightness
+    brightness = mean2(image(center(2)-200:center(2)+200, center(1)-150:center(1)+150));
+    disp(brightness)
+    b = [b, brightness];
+end
+
+%%
+dt = 100e-6;
+fid=fopen('closed_triangle_set1.csv');
+M = textscan(fid,',,%f\r','headerlines',4);
+fclose(fid);
+x = M{1};
+t = (0:(length(x)-1))*dt;
+

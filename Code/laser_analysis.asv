@@ -4,7 +4,7 @@ dark_filename = '6_30_2_dark.seq';
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
 [d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
 
-l_ts_sec = (l_ts - l_ts(1)) * 86400;
+ts_sec = (l_ts - l_ts(1)) * 86400;
 
 %l_seq_data = l_seq_data(500:650,:,:);
 %d_seq_data = d_seq_data(500:650,:,:);
@@ -81,14 +81,14 @@ cos_array = cos(2*pi*20*t/.635*5+pi);
 %plot intensities wrt time
 figure(1)
 ax(4) = subplot(4,1,1);
-plot(l_ts_sec - 0.555,intensity_plot, linewidth = 1)
+plot(l_ts_sec - 0.555,intensity_plot, linewidth = 1.3)
 xlim([8.8,8.9])
 ylabel('Intensity')
 xlabel('Time (s)')
 
 ax(3) = subplot(4,1,4);
 %hold on
-plot(t,pos)
+plot(t,pos, linewidth = 1.3)
 xlabel('Time (s)')
 ylabel(['Position (',char(956),'m)'])
 xlim([8.8,8.9])
@@ -96,7 +96,7 @@ grid on
 
 ax(2) = subplot(4,1,3);
 %hold on
-plot(t,v)
+plot(t,v, linewidth = 1.3)
 xlabel('Time (s)')
 ylabel(['Velocity (',char(956),'m/s)'])
 ylim([-100 100])
@@ -104,9 +104,37 @@ xlim([8.8,8.9])
 grid on
 
 ax(1) = subplot(4,1,2);
-plot(t, cos_array)
+plot(t, cos_array, linewidth = 1.3)
 ylabel('Cos')
 xlim([8.8,8.9])
 xlabel('Time (s)')
 
 linkaxes(ax,'x')
+
+%%
+for frames = 1:27
+    %subplot(4, 4, frames)
+    %colorbar
+    %imagesc(img1(:,:,frames), [0, 255])
+
+    image = (img1(:,:,frames));
+
+    %[y,x] = size(image);
+
+    %Mark Center 
+    center = [450, 400];
+    %plot(center(1),center(2),'*r')
+
+    %calculate brightness
+    brightness = mean2(image(center(2)-200:center(2)+200, center(1)-150:center(1)+150));
+    disp(brightness)
+    b = [b, brightness];
+end
+
+%%
+dt = 100e-6;
+fid=fopen('closed_triangle_set1.csv');
+M = textscan(fid,',,%f\r','headerlines',4);
+fclose(fid);
+x = M{1};
+t = (0:(length(x)-1))*dt;
