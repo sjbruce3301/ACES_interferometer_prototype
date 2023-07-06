@@ -1,5 +1,5 @@
-laser_filename = '07_05_ds2_set1.seq'; %input main file name
-dark_filename = '07_05_dark2.seq'; %input dark file name
+laser_filename = '07_06_closedloop_ds1.seq'; %input main file name
+dark_filename = '07_06_DARK.seq'; %input dark file name
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
 [d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
@@ -51,7 +51,7 @@ for frames = 1:numframes
 end
 
 %Read log file (high res keyence data)
-fname = '07_05_ds2_set1.csv';
+fname = '07_06_closedloop_ds1.csv';
 
 dt = 100e-6;
 fid=fopen(fname);
@@ -62,7 +62,7 @@ t1 = (0:(length(x1)-1))*dt;
 %%
 
 %read low-res log file & calc velocity 
-fname_bin = 'mimic_2023_07_05_ds2_set1.bin';
+fname_bin = 'mimic_2023_07_06_laseronly_ds1.bin';
 
 fid2 = fopen(fname_bin,'r','b');
 data = fread(fid2,inf,'double');
