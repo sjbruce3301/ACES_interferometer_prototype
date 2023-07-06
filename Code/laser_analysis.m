@@ -1,4 +1,4 @@
-laser_filename = '07_06_closedloop_ds1.seq'; %input main file name
+laser_filename = '07_06_closedloop_ds2.seq'; %input main file name
 dark_filename = '07_06_DARK.seq'; %input dark file name
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
@@ -6,14 +6,14 @@ dark_filename = '07_06_DARK.seq'; %input dark file name
 
 ts_sec = (l_ts - l_ts(1)) * 86400; %convert time to seconds
 
-%l_seq_data = l_seq_data(500:650,:,:); %change data size
-%d_seq_data = d_seq_data(500:650,:,:);
+l_seq_data = l_seq_data(250:350,1:6,:); %change data size
+d_seq_data = d_seq_data(250:350,1:6,:);
 
 width = length(l_seq_data(:,1,1));
 height = length(l_seq_data(1,:,1));
 numframes = length(l_seq_data(1,1,:));
 d_numframes = length(d_seq_data(1,1,:));
-
+%%
 
 l_bright = [];
 
@@ -43,7 +43,7 @@ for frames = 1:numframes
     w_image = (scaled_dat(:,:,frames));
 
     %calculate brightness
-    b1 = mean2(w_image(275:350,:));
+    b1 = mean2(w_image(:,:)); %can change centering here (200:300,:)
 
     unsb1 = mean2(uns);
     intensity_plot = [intensity_plot, b1];
@@ -51,7 +51,7 @@ for frames = 1:numframes
 end
 
 %Read log file (high res keyence data)
-fname = '07_06_closedloop_ds1.csv';
+fname = '07_06_closedloop_ds2.csv';
 
 dt = 100e-6;
 fid=fopen(fname);
@@ -62,7 +62,7 @@ t1 = (0:(length(x1)-1))*dt;
 %%
 
 %read low-res log file & calc velocity 
-fname_bin = 'mimic_2023_07_06_laseronly_ds1.bin';
+fname_bin = 'mimic_2023_07_06_laseronly_ds2.bin';
 
 fid2 = fopen(fname_bin,'r','b');
 data = fread(fid2,inf,'double');
@@ -86,7 +86,7 @@ N = round(1/dt);
 %%
 %cosine calc
 
-cos_array = cos(2*pi*20*t/.635*5+pi);
+cos_array = cos(2*pi*x1/.635*5+pi);
 
 %%
 
@@ -103,7 +103,7 @@ ax(3) = subplot(4,1,4);
 plot(t1,x1, linewidth = 1.3)
 xlabel('Time (s)')
 ylabel(['Position (',char(956),'m)'])
-%xlim([8.8,8.9])
+xlim([0,30])
 grid on
 
 ax(2) = subplot(4,1,3);
@@ -116,9 +116,9 @@ ylim([-100 100])
 grid on
 
 ax(1) = subplot(4,1,2);
-plot(t, cos_array, linewidth = 1.3)
+plot(t1, cos_array, linewidth = 1.3)
 ylabel('Cos')
-%xlim([8.8,8.9])
+xlim([0,30])
 xlabel('Time (s)') 
 
 linkaxes(ax,'x')
