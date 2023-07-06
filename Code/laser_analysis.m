@@ -1,4 +1,4 @@
-laser_filename = '07_06_closedloop_ds2.seq'; %input main file name
+laser_filename = '07_06_closedloop_ds5.seq'; %input main file name
 dark_filename = '07_06_DARK.seq'; %input dark file name
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
@@ -51,7 +51,7 @@ for frames = 1:numframes
 end
 
 %Read log file (high res keyence data)
-fname = '07_06_closedloop_ds2.csv';
+fname = '07_06_closedloop_ds5.csv';
 
 dt = 100e-6;
 fid=fopen(fname);
@@ -62,7 +62,7 @@ t1 = (0:(length(x1)-1))*dt;
 %%
 
 %read low-res log file & calc velocity 
-fname_bin = 'mimic_2023_07_06_laseronly_ds2.bin';
+fname_bin = 'mimic_2023_07_06_closedloop_ds5.bin';
 
 fid2 = fopen(fname_bin,'r','b');
 data = fread(fid2,inf,'double');
@@ -93,7 +93,7 @@ cos_array = cos(2*pi*x1/.635*5+pi);
 %plot intensities wrt time
 figure(1)
 ax(4) = subplot(4,1,1);
-plot(ts_sec - 0.555,intensity_plot, linewidth = 1.3)
+plot(ts_sec + 1.982,intensity_plot, linewidth = 1.3)
 %xlim([8.8,8.9])
 ylabel('Intensity')
 xlabel('Time (s)')
