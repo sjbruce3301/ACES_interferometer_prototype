@@ -1,13 +1,13 @@
-laser_filename = '07_07_ds3.seq'; %input main file name                 %CHANGE THIS PER FILE
-dark_filename = '07_07_DARK.seq'; %input dark file name                 %CHANGE THIS PER FILE
+laser_filename = '07_10_still_ds1.seq'; %input main file name                 %CHANGE THIS PER FILE
+dark_filename = '07_10_DARK.seq'; %input dark file name                 %CHANGE THIS PER FILE
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
 [d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
 
 ts_sec = (l_ts - l_ts(1)) * 86400; %convert time to seconds
 
-l_seq_data = l_seq_data(250:350,1:6,:); %change data size
-d_seq_data = d_seq_data(250:350,1:6,:);
+l_seq_data = l_seq_data(260:320,:,:); %change data size
+d_seq_data = d_seq_data(250:320,:,:);
 
 width = length(l_seq_data(:,1,1));
 height = length(l_seq_data(1,:,1));
@@ -51,7 +51,7 @@ for frames = 1:numframes
 end
 
 %Read log file (high res keyence data)
-fname = '07_07_ds3.csv';                                                %CHANGE THIS PER FILE
+fname = '07_10_still_ds1.csv';                                                %CHANGE THIS PER FILE
 
 dt = 100e-6;
 fid=fopen(fname);
