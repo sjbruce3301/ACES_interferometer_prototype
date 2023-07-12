@@ -1,13 +1,13 @@
-laser_filename = '07_10_still_ds1.seq'; %input main file name                 %CHANGE THIS PER FILE
-dark_filename = '07_10_DARK.seq'; %input dark file name                 %CHANGE THIS PER FILE
+laser_filename = '07_12_2khz_100sv_ds1.seq'; %input main file name                 %CHANGE THIS PER FILE
+dark_filename = '07_12_DARK.seq'; %input dark file name                 %CHANGE THIS PER FILE
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
 [d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
 
 ts_sec = (l_ts - l_ts(1)) * 86400; %convert time to seconds
 
-l_seq_data = l_seq_data(260:320,:,:); %change data size
-d_seq_data = d_seq_data(250:320,:,:);
+l_seq_data = l_seq_data(220:340,1:6,:); %change data size
+d_seq_data = d_seq_data(220:340,1:6,:);
 
 width = length(l_seq_data(:,1,1));
 height = length(l_seq_data(1,:,1));
@@ -51,7 +51,7 @@ for frames = 1:numframes
 end
 
 %Read log file (high res keyence data)
-fname = '07_10_still_ds1.csv';                                                %CHANGE THIS PER FILE
+fname = '07_12_2khz_100sv_ds2.csv';                                                %CHANGE THIS PER FILE
 
 dt = 100e-6;
 fid=fopen(fname);
@@ -62,7 +62,7 @@ t1 = (0:(length(x1)-1))*dt;
 %%
 
 %read low-res log file & calc velocity 
-fname_bin = 'mimic_2023_07_07_ds3.bin';                                 %CHANGE THIS PER FILE
+fname_bin = 'mimic_2023_07_07_ds2.bin';                                 %CHANGE THIS PER FILE
 
 fid2 = fopen(fname_bin,'r','b');
 data = fread(fid2,inf,'double');
@@ -108,7 +108,7 @@ grid on
 
 ax(2) = subplot(4,1,3);
 %hold on
-plot(t,v, linewidth = 1.3)
+%plot(t,v, linewidth = 1.3)
 xlabel('Time (s)')
 ylabel(['Velocity (',char(956),'m/s)'])
 ylim([-100 100])
@@ -126,15 +126,16 @@ linkaxes(ax,'x')
 %%
 
 %display visual laser images
-frames = l_seq_data(280:340,:,[9,14,19,24,29,34,39,44,49,54,70,80]); %pick frames to be shown
-
+frames = l_seq_data(:,:,1:12); %pick frames to be shown
+figure (2)
 for frame = 1:12
     subplot(3, 4, frame)
+    disp(frame)
     colorbar
     colormap bone
     imagesc(frames(:,:,frame))
 
-    if frame==9
+    if frame==1
         cl = caxis; %# get color limits from the 1st image
     else
         caxis(cl) %# apply the same color limits to other images
@@ -144,4 +145,6 @@ for frame = 1:12
 end
 
 
+%%
 
+fourier_transform = fft(intensity_plot());
