@@ -1,4 +1,4 @@
-laser_filename = '07_13_ds1.seq'; %input main file name                 %CHANGE THIS PER FILE
+laser_filename = '07_13_ds2.seq'; %input main file name                 %CHANGE THIS PER FILE
 dark_filename = '07_13_DARK.seq'; %input dark file name                 %CHANGE THIS PER FILE
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
@@ -6,8 +6,8 @@ dark_filename = '07_13_DARK.seq'; %input dark file name                 %CHANGE 
 
 ts_sec = (l_ts - l_ts(1)) * 86400; %convert time to seconds
 
-l_seq_data = l_seq_data(270:370,1:6,:); %change data size
-d_seq_data = d_seq_data(270:370,1:6,:);
+l_seq_data = l_seq_data(320:325,1:6,:); %change data size
+d_seq_data = d_seq_data(320:325,1:6,:);
 
 width = length(l_seq_data(:,1,1));
 height = length(l_seq_data(1,:,1));
@@ -51,7 +51,7 @@ for frames = 1:numframes
 end
 
 %Read log file (high res keyence data)
-fname = '07_13_ds1.csv';                                                %CHANGE THIS PER FILE
+fname = '07_13_ds2.csv';                                                %CHANGE THIS PER FILE
 
 dt = 100e-6;
 fid=fopen(fname);
@@ -126,7 +126,7 @@ linkaxes(ax,'x')
 %%
 
 %display visual laser images
-frames = l_seq_data(:,:,1:12); %pick frames to be shown
+frames = l_seq_data(:,:,10:22); %pick frames to be shown
 figure (2)
 for frame = 1:12
     subplot(3, 4, frame)
