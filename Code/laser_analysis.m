@@ -1,5 +1,5 @@
-laser_filename = '07_13_ds2.seq'; %input main file name                 %CHANGE THIS PER FILE
-dark_filename = '07_13_DARK.seq'; %input dark file name                 %CHANGE THIS PER FILE
+laser_filename = '07_14_m01_300sv.seq'; %input main file name                 %CHANGE THIS PER FILE
+dark_filename = '07_14_DARK.seq'; %input dark file name                 %CHANGE THIS PER FILE
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
 [d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
@@ -51,7 +51,7 @@ for frames = 1:numframes
 end
 
 %Read log file (high res keyence data)
-fname = '07_13_ds2.csv';                                                %CHANGE THIS PER FILE
+fname = '07_14_m10_300sv.csv';                                                %CHANGE THIS PER FILE
 
 dt = 100e-6;
 fid=fopen(fname);
@@ -93,8 +93,8 @@ cos_array = cos(2*pi*x1/.635*5+pi);
 %plot intensities wrt time
 figure(1)
 ax(4) = subplot(4,1,1);
-plot(ts_sec + 2.172,intensity_plot, linewidth = 1.3)
-%xlim([8.8,8.9])
+plot(ts_sec + 2.204,intensity_plot, linewidth = 1.3)
+xlim([7.2,7.4])
 ylabel('Intensity')
 xlabel('Time (s)')
 
@@ -105,6 +105,8 @@ xlabel('Time (s)')
 ylabel(['Position (',char(956),'m)'])
 xlim([0,30])
 grid on
+xlim([7.2,7.4])
+
 
 ax(2) = subplot(4,1,3);
 %hold on
@@ -114,12 +116,16 @@ ylabel(['Velocity (',char(956),'m/s)'])
 ylim([-100 100])
 %xlim([8.8,8.9])
 grid on
+xlim([7.2,7.4])
+
 
 ax(1) = subplot(4,1,2);
 plot(t1, cos_array, linewidth = 1.3)
 ylabel('Cos')
 xlim([0,30])
 xlabel('Time (s)') 
+xlim([7.2,7.4])
+
 
 linkaxes(ax,'x')
 
@@ -147,4 +153,4 @@ end
 
 %%
 
-fourier_transform = fft(intensity_plot());
+fourier_transform = fft(intensity_plot(7240:7320));
