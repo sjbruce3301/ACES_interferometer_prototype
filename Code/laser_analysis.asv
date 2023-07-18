@@ -1,5 +1,5 @@
-laser_filename = '07_06.seq'; %input main file name                %CHANGE THIS PER FILE
-dark_filename = '07_14_DARK.seq'; %input dark file name                      %CHANGE THIS PER FILE
+laser_filename = '07_17_ds1.seq'; %input main file name                %CHANGE THIS PER FILE
+dark_filename = '07_17_DARK.seq'; %input dark file name                      %CHANGE THIS PER FILE
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
 [d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
@@ -51,7 +51,7 @@ for frames = 1:numframes
 end
 
 %Read log file (high res keyence data)
-fname = '07_14_m00_300sv.csv';                                                %CHANGE THIS PER FILE
+fname = '07_17_ds1.csv';                                                %CHANGE THIS PER FILE
 
 dt = 100e-6;
 fid=fopen(fname);
@@ -157,4 +157,4 @@ fourier_transform = fft(intensity_plot(1726:1760));
 
 %%
 
-
+camera_pos = interp1(t1, x1, ts_sec);
