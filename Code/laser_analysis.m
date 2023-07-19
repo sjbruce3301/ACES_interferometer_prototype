@@ -161,5 +161,10 @@ camera_pos_x = interp1(t1, x1, timealigned_camera);
 
 x_cam_window = camera_pos_x(6300:6750);
 i_window = intensity_plot(6300:6750);
-x_const = 0:.005:4;
-i_const = interp1(unique(x_cam_window), i_window(1:435), unique(x_const));
+x_const = -49.5:.01:-45.8;
+
+[unique_mtx,indx] = unique(x_cam_window);
+useable_intens = i_window(indx);
+i_const = interp1(unique_mtx, useable_intens, x_const);
+
+fourier_t = fft(i_const);
