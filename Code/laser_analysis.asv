@@ -1,4 +1,4 @@
-laser_filename = '07_18_ds2.seq'; %input main file name                %CHANGE THIS PER FILE
+laser_filename = '07_18_ds3.seq'; %input main file name                %CHANGE THIS PER FILE
 dark_filename = '07_18_DARK.seq'; %input dark file name                      %CHANGE THIS PER FILE
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
@@ -51,7 +51,7 @@ for frames = 1:numframes
 end
 
 %Read log file (high res keyence data)
-fname = '07_18_ds2.csv';                                                %CHANGE THIS PER FILE
+fname = '07_18_ds3.csv';                                                %CHANGE THIS PER FILE
 
 dt = 100e-6;
 fid=fopen(fname);
@@ -62,10 +62,10 @@ t1 = (0:(length(x1)-1))*dt;
 %%
 
 %read low-res log file & calc velocity 
-fname_bin = 'mimic_2023_07_07_ds2.bin';                                 %CHANGE THIS PER FILE
+%fname_bin = 'mimic_2023_07_07_ds2.bin';                                 %CHANGE THIS PER FILE
 
-fid2 = fopen(fname_bin,'r','b');
-data = fread(fid2,inf,'double');
+%fid2 = fopen(fname_bin,'r','b');
+%data = fread(fid2,inf,'double');
 fclose(fid2);
 
 data = reshape(data,7,[])';
@@ -93,7 +93,8 @@ cos_array = cos(2*pi*x1/.635*5+pi);
 %plot intensities wrt time
 figure(1)
 ax(4) = subplot(4,1,1);
-plot(ts_sec + 0.75,intensity_plot, linewidth = 1.3)
+plot(ts_sec + 1.5,intensity_plot, linewidth = 1.3)
+plot(intensity_plot)
 %xlim([7.2,7.4])
 ylabel('Intensity')
 xlabel('Time (s)')
@@ -127,7 +128,7 @@ xlabel('Time (s)')
 %xlim([7.2,7.4])
 
 
-linkaxes(ax,'x')
+%linkaxes(ax,'x')
 
 %%
 
@@ -156,13 +157,21 @@ end
 fourier_transform = fft(intensity_plot(1726:1760));
 
 %%
-timealigned_camera = ts_sec + 0.75;
+timealigned_camera = ts_sec + 1.5;
 camera_pos_x = interp1(t1, x1, timealigned_camera);
 
-x_cam_window = camera_pos_x(6300:6750);
-i_window = intensity_plot(6300:6750);
-x_const = -49.5:.01:-45.8;
+x_cam_window = camera_pos_x(10080:10200);
+i_window = intensity_plot(10080:10200);
+x_const = -83.3:.01:-81.8;
 
 [unique_mtx,indx] = unique(x_cam_window);
 useable_intens = i_window(indx);
-%i_const = interp1(unique(x_cam_window), i_window(1:435), unique(x_const));
+i_const = interp1(unique_mtx, useable_intens, x_const);
+
+dx = .01*3.57*.0001;
+step = linspace(-1/dx/2,1/dx/2,length(i_const));
+
+fourier_t = abs(fftshift(fft(i_const)));
+
+figure(3)
+plot(step,fourier_t)
