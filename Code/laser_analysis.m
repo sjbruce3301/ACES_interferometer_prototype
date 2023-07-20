@@ -1,5 +1,5 @@
-laser_filename = '07_18_ds3.seq'; %input main file name                %CHANGE THIS PER FILE
-dark_filename = '07_18_DARK.seq'; %input dark file name                      %CHANGE THIS PER FILE
+laser_filename = '07_18_ds3.seq'; %input main file name                     %CHANGE THIS PER FILE
+dark_filename = '07_18_DARK.seq'; %input dark file name                     %CHANGE THIS PER FILE
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
 [d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
@@ -14,6 +14,9 @@ height = length(l_seq_data(1,:,1));
 numframes = length(l_seq_data(1,1,:));
 d_numframes = length(d_seq_data(1,1,:));
 %%
+
+%This section creates a master dark image for subtraction, calculates frame
+%intensities, and reads the keyence log files.
 
 l_bright = [];
 
@@ -60,8 +63,11 @@ fclose(fid);
 x1 = M{1};
 t1 = (0:(length(x1)-1))*dt;
 %%
+
+%This section (no longer in use) used the lower resolution mimic files to
+%calculate positions and velocity.
+
 %{
-%read low-res log file & calc velocity 
 fname_bin = 'mimic_2023_07_07_ds2.bin';                                 %CHANGE THIS PER FILE
 
 fid2 = fopen(fname_bin,'r','b');
@@ -84,24 +90,23 @@ dt = mean(diff(t));
 N = round(1/dt);
 
 %}
-
 %%
-%cosine calc
+
+%This section displays plots of intensities, position, and cosine.
+
 
 cos_array = cos(2*pi*x1/.635*5+pi);
 
-%%
-
 %plot intensities wrt time
 figure(1)
-ax(4) = subplot(4,1,1);
+ax(3) = subplot(3,1,1);
 plot(ts_sec + 1.5,intensity_plot, linewidth = 1.3)
 plot(intensity_plot)
 %xlim([7.2,7.4])
 ylabel('Intensity')
 xlabel('Time (s)')
 
-ax(3) = subplot(4,1,4);
+ax(2) = subplot(3,1,3);
 %hold on
 plot(t1,x1, linewidth = 1.3)
 xlabel('Time (s)')
@@ -111,18 +116,7 @@ grid on
 %xlim([7.2,7.4])
 
 
-ax(2) = subplot(4,1,3);
-%hold on
-%plot(t,v, linewidth = 1.3)
-xlabel('Time (s)')
-ylabel(['Velocity (',char(956),'m/s)'])
-ylim([-100 100])
-%xlim([8.8,8.9])
-grid on
-%xlim([7.2,7.4])
-
-
-ax(1) = subplot(4,1,2);
+ax(1) = subplot(3,1,2);
 plot(t1, cos_array, linewidth = 1.3)
 ylabel('Cos')
 xlim([0,30])
@@ -133,8 +127,9 @@ xlabel('Time (s)')
 %linkaxes(ax,'x')
 
 %%
+% This section displays a set of 12 laser images visually.
 
-%display visual laser images
+
 frames = l_seq_data(:,:,10:22); %pick frames to be shown
 figure (2)
 for frame = 1:12
@@ -154,13 +149,16 @@ for frame = 1:12
 end
 
 %%
+
+%This section performs the data interpolation & Fourier Transform.
+
 timealigned_camera = ts_sec + 1.5;
 camera_pos_x = interp1(t1, x1, timealigned_camera);
 
-x_cam_window = camera_pos_x(8000:10200);
-i_window = intensity_plot(8000:10200);
+x_cam_window = camera_pos_x(10000:10200);
+i_window = intensity_plot(10000:10200);
 i_window = detrend(i_window, 'constant');
-x_const = -83.3:.01:-64;
+x_const = -83.3:.01:-82; %-64
 
 [unique_mtx,indx] = unique(x_cam_window);
 useable_intens = i_window(indx);
@@ -169,7 +167,6 @@ i_const = interp1(unique_mtx, useable_intens, x_const);
 dx = .01*3.57*.0001 * 1.65;
 step = linspace(-1/dx/2,1/dx/2,1024);
 
-%win = hann(length(i_const));
 
 fourier_original = abs(fftshift(fft(i_window, 1024)));
 
@@ -180,6 +177,9 @@ hold on
 plot(step,fourier_t, LineWidth=1)
 
 plot(step, fourier_original, LineWidth = 1)
+%xlim([-5000, inf])
+colororder(["blue";"red"])
+
 
 title('Fourier Transform vs Wave Number')
 legend('FT after interpolation', 'Original FT')
