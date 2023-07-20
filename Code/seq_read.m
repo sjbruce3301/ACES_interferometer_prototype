@@ -1,4 +1,4 @@
-laser_filename = 'nb_camera_2023_06_30_16_06_07_data.seq'; %x number of sec in 1 day
+laser_filename = 'nb_camera_2023_06_30_16_06_07_data.seq';
 dark_filename = 'nb_camera_2023_06_30_16_09_54_dark.seq';
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
@@ -6,7 +6,7 @@ dark_filename = 'nb_camera_2023_06_30_16_09_54_dark.seq';
 
 l_ts_sec = (l_ts - l_ts(1)) * 86400;
 
-%l_seq_data = l_seq_data(500:650,:,:);
+%l_seq_data = l_seq_data(500:650,:,:); %Change size of data if needed
 %d_seq_data = d_seq_data(500:650,:,:);
 
 width = length(l_seq_data(:,1,1));
@@ -20,7 +20,7 @@ l_bright = [];
 dark_master = zeros(width, height);
 
 
-for x = 1:width
+for x = 1:width %creates dark master file
     for y = 1:height
         pixels = zeros(1,d_numframes);
         for u = 1:d_numframes
@@ -32,6 +32,7 @@ for x = 1:width
     end
 end
 %%
+%used this to test/check dark image pixels (not needed anymore)
 
 dark_pix = [];
 for f = 1:d_numframes
@@ -40,6 +41,8 @@ for f = 1:d_numframes
 end
 
 %%
+
+%This section can calculate intensities & display data
 
 scaled_dat = double(l_seq_data) - dark_master;
 
@@ -86,6 +89,8 @@ plot(l_ts_sec,b)
 %xlabel("Frame")
 %ylabel("Average Intensity")
 %%
+
+%displays intensity plots
 
 subplot(2,2, 1)
 hold on
