@@ -157,18 +157,21 @@ end
 timealigned_camera = ts_sec + 1.5;
 camera_pos_x = interp1(t1, x1, timealigned_camera);
 
-x_cam_window = camera_pos_x(10080:10200);
-i_window = intensity_plot(10080:10200);
-x_const = -83.3:.01:-81.8;
+x_cam_window = camera_pos_x(8080:10200);
+i_window = intensity_plot(8080:10200);
+i_window = detrend(i_window, 'constant');
+x_const = -83.3:.01:-64;
 
 [unique_mtx,indx] = unique(x_cam_window);
 useable_intens = i_window(indx);
 i_const = interp1(unique_mtx, useable_intens, x_const);
 
-dx = .01*3.57*.0001;
-step = linspace(-1/dx/2,1/dx/2,length(i_const));
+dx = .01*3.57*.0001 * 1.65;
+step = linspace(-1/dx/2,1/dx/2,1024);
 
-fourier_t = abs(fftshift(fft(i_const)));
+%win = hann(length(i_const));
+
+fourier_t = abs(fftshift(fft(i_const, 1024)));
 
 figure(3)
 plot(step,fourier_t)
