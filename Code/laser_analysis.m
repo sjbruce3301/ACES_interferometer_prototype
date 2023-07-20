@@ -1,3 +1,5 @@
+%% This is the main file for reading & interpreting ACES FTIR test data
+
 laser_filename = '07_18_ds3.seq'; %input main file name                     %CHANGE THIS PER FILE
 dark_filename = '07_18_DARK.seq'; %input dark file name                     %CHANGE THIS PER FILE
 
