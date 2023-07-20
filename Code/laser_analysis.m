@@ -176,7 +176,10 @@ fourier_original = abs(fftshift(fft(i_window, 1024)));
 fourier_t = abs(fftshift(fft(i_const, 1024)));
 
 figure(3)
-plot(step,fourier_t)
+hold on
+plot(step,fourier_t, LineWidth=1)
 
-figure(4)
-plot(step, fourier_original)
+plot(step, fourier_original, LineWidth = 1)
+
+title('Fourier Transform vs Wave Number')
+legend('FT after interpolation', 'Original FT')
