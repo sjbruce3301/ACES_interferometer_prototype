@@ -13,10 +13,8 @@ width = length(l_seq_data(:,1,1));
 height = length(l_seq_data(1,:,1));
 numframes = length(l_seq_data(1,1,:));
 d_numframes = length(d_seq_data(1,1,:));
-%%
 
-%This section creates a master dark image for subtraction, calculates frame
-%intensities, and reads the keyence log files.
+%% This section creates a master dark image for subtraction, calculates frame intensities, and reads the keyence log files.
 
 l_bright = [];
 
@@ -62,10 +60,10 @@ M = textscan(fid,',,%f\r','headerlines',4);
 fclose(fid);
 x1 = M{1};
 t1 = (0:(length(x1)-1))*dt;
-%%
 
-%This section (no longer in use) used the lower resolution mimic files to
-%calculate positions and velocity.
+
+%% This section (no longer in use) used the lower resolution mimic files to calculate positions and velocity.
+
 
 %{
 fname_bin = 'mimic_2023_07_07_ds2.bin';                                 %CHANGE THIS PER FILE
@@ -90,9 +88,10 @@ dt = mean(diff(t));
 N = round(1/dt);
 
 %}
-%%
 
-%This section displays plots of intensities, position, and cosine.
+
+
+%% This section displays plots of intensities, position, and cosine.
 
 
 cos_array = cos(2*pi*x1/.635*5+pi);
@@ -126,8 +125,9 @@ xlabel('Time (s)')
 
 %linkaxes(ax,'x')
 
-%%
-% This section displays a set of 12 laser images visually.
+
+
+%% This section displays a set of 12 laser images visually.
 
 
 frames = l_seq_data(:,:,10:22); %pick frames to be shown
@@ -148,9 +148,9 @@ for frame = 1:12
     end
 end
 
-%%
 
-%This section performs the data interpolation & Fourier Transform.
+
+%% This section performs the data interpolation & Fourier Transform.
 
 timealigned_camera = ts_sec + 1.5;
 camera_pos_x = interp1(t1, x1, timealigned_camera);

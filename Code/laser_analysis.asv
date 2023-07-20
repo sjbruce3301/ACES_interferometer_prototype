@@ -1,5 +1,5 @@
-laser_filename = '07_18_ds3.seq'; %input main file name                %CHANGE THIS PER FILE
-dark_filename = '07_18_DARK.seq'; %input dark file name                      %CHANGE THIS PER FILE
+laser_filename = '07_18_ds3.seq'; %input main file name                     %CHANGE THIS PER FILE
+dark_filename = '07_18_DARK.seq'; %input dark file name                     %CHANGE THIS PER FILE
 
 [l_header, l_seq_data, l_ts] = readSeqSciCam(laser_filename);
 [d_header, d_seq_data, d_ts] = readSeqSciCam(dark_filename);
@@ -13,7 +13,8 @@ width = length(l_seq_data(:,1,1));
 height = length(l_seq_data(1,:,1));
 numframes = length(l_seq_data(1,1,:));
 d_numframes = length(d_seq_data(1,1,:));
-%%
+
+%% This section creates a master dark image for subtraction, calculates frame intensities, and reads the keyence log files.
 
 l_bright = [];
 
@@ -61,8 +62,7 @@ x1 = M{1};
 t1 = (0:(length(x1)-1))*dt;
 %%
 
-%This section (no longer in use) used the lower resolution mimic files to
-%calculate positions and velocity.
+%This section (no longer in use) used the lower resolution mimic files to calculate positions and velocity.
 
 %{
 fname_bin = 'mimic_2023_07_07_ds2.bin';                                 %CHANGE THIS PER FILE
@@ -87,11 +87,6 @@ dt = mean(diff(t));
 N = round(1/dt);
 
 %}
-
-%%
-%cosine calc
-
-
 %%
 
 %This section displays plots of intensities, position, and cosine.
@@ -169,7 +164,6 @@ i_const = interp1(unique_mtx, useable_intens, x_const);
 dx = .01*3.57*.0001 * 1.65;
 step = linspace(-1/dx/2,1/dx/2,1024);
 
-%win = hann(length(i_const));
 
 fourier_original = abs(fftshift(fft(i_window, 1024)));
 
