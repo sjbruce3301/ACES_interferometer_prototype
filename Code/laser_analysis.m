@@ -157,8 +157,8 @@ end
 timealigned_camera = ts_sec + 1.5;
 camera_pos_x = interp1(t1, x1, timealigned_camera);
 
-x_cam_window = camera_pos_x(8080:10200);
-i_window = intensity_plot(8080:10200);
+x_cam_window = camera_pos_x(8000:10200);
+i_window = intensity_plot(8000:10200);
 i_window = detrend(i_window, 'constant');
 x_const = -83.3:.01:-64;
 
@@ -171,7 +171,12 @@ step = linspace(-1/dx/2,1/dx/2,1024);
 
 %win = hann(length(i_const));
 
+fourier_original = abs(fftshift(fft(i_window, 1024)));
+
 fourier_t = abs(fftshift(fft(i_const, 1024)));
 
 figure(3)
 plot(step,fourier_t)
+
+figure(4)
+plot(step, fourier_original)
