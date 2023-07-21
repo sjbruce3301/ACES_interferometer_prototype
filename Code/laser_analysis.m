@@ -101,31 +101,30 @@ cos_array = cos(2*pi*x1/.635*5+pi);
 %plot intensities wrt time
 figure(1)
 ax(3) = subplot(3,1,1);
-plot(ts_sec + 1.5,intensity_plot, linewidth = 1.3)
-plot(intensity_plot)
-%xlim([7.2,7.4])
+plot(ts_sec + 1.5,intensity_plot, linewidth = 1.5)
+xlim([22.2,22.6])
 ylabel('Intensity')
 xlabel('Time (s)')
 
 ax(2) = subplot(3,1,3);
 %hold on
-plot(t1,x1, linewidth = 1.3)
+plot(t1,x1, linewidth = 1.5)
 xlabel('Time (s)')
 ylabel(['Position (',char(956),'m)'])
-xlim([0,30])
+xlim([22.2,22.6])
 grid on
 %xlim([7.2,7.4])
 
 
 ax(1) = subplot(3,1,2);
-plot(t1, cos_array, linewidth = 1.3)
+plot(t1, cos_array, linewidth = 1.5)
 ylabel('Cos')
-xlim([0,30])
+xlim([22.2,22.6])
 xlabel('Time (s)') 
 %xlim([7.2,7.4])
 
 
-%linkaxes(ax,'x')
+linkaxes(ax,'x')
 
 
 
